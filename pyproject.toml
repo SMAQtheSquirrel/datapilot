@@ -1,0 +1,29 @@
+[project]
+name = "datapilot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Maciej Grzegorz Staniszewski", email = "maciek123322@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.5.6",
+    "pandas>=3.0.6",
+    "pydantic>=2.13.5",
+    "scipy>=1.18.1",
+    "statsmodels>=0.15.0",
+]
+
+[project.scripts]
+datapilot = "datapilot:main"
+
+[build-system]
+requires = ["uv_build>=0.12.22,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.10",
+]
