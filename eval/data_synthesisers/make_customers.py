@@ -117,8 +117,8 @@ def compute_truth(df: pd.DataFrame) -> dict:
             "retention_drop_pp": RETENTION_DROP * 100,
             "expected_retention_in_effect_group": BASE_RETENTION[EFFECT_SEGMENT] - RETENTION_DROP,
         },
-        "rows_with_duplicates": int(len(df)),
-        "rows_after_dedup": int(len(clean)),
+        "rows_with_duplicates": len(df),
+        "rows_after_dedup": len(clean),
         "duplicate_rows": int(df.duplicated().sum()),
         "missing_revenue": int(clean["revenue"].isna().sum()),
         "observed_retention_by_segment_quarter": {

@@ -1,5 +1,8 @@
-from pydantic import BaseModel
+from datetime import datetime
 from enum import Enum
+
+from pydantic import BaseModel
+
 
 class ColumnKind(str, Enum):
     NUMERIC = "numeric"
@@ -16,8 +19,6 @@ class NumericStats(BaseModel):
     max_value: float | None = None
     quantiles: dict[str, float] = {}
     outlier_count: int = 0
-
-from datetime import datetime
 
 
 class ValueCount(BaseModel):
@@ -47,7 +48,7 @@ class ColumnProfile(BaseModel):
     name: str
     kind: ColumnKind
     missing_count: int
-    missing_fraction: float
+    missing_fraction: float | None = None
     unique_count: int
 
     # kind-specific blocks
@@ -57,8 +58,10 @@ class ColumnProfile(BaseModel):
     binary: BinaryStats | None = None
     
 class DatasetProfile(BaseModel):
-    name:str
-    memory_size:float
-    row_count:int
-    column_profiles:list[ColumnProfile]
+    name: str | None = None
+    memory_size: float 
+    row_count: int
+    duplicate_rows: int
+    missing_cells: int
+    column_profiles: list[ColumnProfile]
     
