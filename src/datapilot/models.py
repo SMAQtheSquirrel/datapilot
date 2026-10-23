@@ -64,4 +64,33 @@ class DatasetProfile(BaseModel):
     duplicate_rows: int
     missing_cells: int
     column_profiles: list[ColumnProfile]
-    
+
+
+
+class Unit(str, Enum):
+    COUNT = "count"
+    PROPORTION = "proportion"
+    PERCENT = "percent"
+    PERCENTAGE_POINTS = "percentage_points"
+    P_VALUE = "p_value"
+    NUMBER = "number"
+
+
+class Measure(BaseModel):
+
+    value: float | None 
+    unit: Unit
+
+from typing import Any
+
+from pydantic import Field
+
+
+class Finding(BaseModel):
+    id: str = Field(min_length=1)
+    tool: str
+    description: str
+    values: dict[str, Measure] = {}
+    table: list[dict[str, Any]] | None = None
+    artifact_path: str | None = None
+    caveats: list[str] = [] 

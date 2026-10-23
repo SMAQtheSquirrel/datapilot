@@ -1,20 +1,29 @@
-"""Data loading: raw source in, clean DataFrame out.
+"""Data loading: turn a raw CSV source into a DataFrame with sensible column types.
 
-This is a fixed pipeline stage (the `load_dataset` node of the graph), NOT an
-agent tool. It runs before profiling so every later stage sees sensible types.
+This is the first stage of the analysis pipeline (the ``load_dataset`` step). It runs
+before profiling, so every later stage sees correct column types. It is a fixed
+pipeline stage, not a tool the agent can call.
 
-Responsibilities
-----------------
-* load_csv                -> bytes become a DataFrame, nothing else
-* infer_datetime_columns  -> text columns that are really dates become datetimes
-* prepare_dataframe       -> the single entry point the rest of the project calls
+Public API
+----------
+load_csv                 Read a CSV from a path or file-like object. No type changes.
+infer_datetime_columns   Convert text columns that contain dates to datetime.
+prepare_dataframe        load_csv followed by infer_datetime_columns. This is the
+                         entry point the rest of the package should use.
 
-Not responsibilities (keep them out of this file)
--------------------------------------------------
-* Where the bytes come from (local disk now, S3 later: a separate storage module
-  will hand this module a file-like object).
-* Registering the DataFrame in DuckDB (that belongs to tools/sql.py).
-* Renaming or cleaning columns (users refer to the original column names).
+Scope
+-----
+* Where the data comes from (local disk, an upload, cloud storage) is the caller's
+  concern. Any path or file-like object works.
+* Registering the DataFrame for SQL queries belongs to ``tools/sql.py``.
+* Column names are never changed, so they match the names used in user questions.
+
+Known limitations
+-----------------
+* Dates are only recognised in the formats listed in ``DATE_FORMATS``.
+* Slash-separated dates that are valid both day-first and month-first
+  (for example ``03/04/2024``) are read day-first.
+* Values in a date column that do not match the detected format become missing (NaT).
 """
 
 from __future__ import annotations
