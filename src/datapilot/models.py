@@ -93,4 +93,5 @@ class Finding(BaseModel):
     values: dict[str, Measure] = {}
     table: list[dict[str, Any]] | None = None
     artifact_path: str | None = None
-    caveats: list[str] = [] 
+    caveats: list[str] = []
+    arguments: dict[str, Any] = {}
