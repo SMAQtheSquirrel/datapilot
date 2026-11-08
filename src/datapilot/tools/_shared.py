@@ -15,6 +15,8 @@ from typing import Any
 
 import pandas as pd
 
+MIN_GROUP_SIZE = 30  # groups with fewer usable rows than this get a "small sample" caveat
+
 
 def validate_columns(df: pd.DataFrame, columns: list[str]) -> None:
     """Raise ValueError if any of ``columns`` is not a column of ``df``."""

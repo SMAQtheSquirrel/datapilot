@@ -34,12 +34,11 @@ import pandas as pd
 
 from datapilot.models import Finding, Measure, Unit
 from datapilot.tools._shared import (
+    MIN_GROUP_SIZE,
     is_binary_metric,
     prepare_two_groups,
     require_numeric,
 )
-
-MIN_GROUP_SIZE = 30  # groups smaller than this get a "small sample" caveat
 
 
 def _summarise_group(rows: pd.DataFrame, metric: str) -> tuple[int, float | None]:
